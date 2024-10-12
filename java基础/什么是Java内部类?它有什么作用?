@@ -1,0 +1,60 @@
+Java内部类
+定义
+Java中的内部类是定义在另一个类内部的类。内部类可以访问外部类的所有成员，包括私有成员。根据定义和用法的不同，内部类可以分为几种类型：
+
+成员内部类（Member Inner Class）：与外部类的实例相关联，可以访问外部类的所有成员。
+静态内部类（Static Inner Class）：与外部类的实例无关，不能访问外部类的实例变量，但可以访问外部类的静态变量。
+局部内部类（Local Inner Class）：定义在方法内部的类，作用域仅限于方法内部。
+匿名内部类（Anonymous Inner Class）：没有名称的内部类，通常用于快速实现接口或类，尤其在需要一个简短的实现时。
+作用
+封装性：内部类能够更好地封装数据和行为，因为它与外部类的关系更紧密。这样可以提高代码的可读性和可维护性。
+
+逻辑分组：将相关的类组织在一起，使得代码结构更加清晰。内部类通常用于辅助外部类实现某些功能。
+
+访问权限：内部类可以访问外部类的私有成员，提供了一种更灵活的访问控制。
+
+事件处理：在图形用户界面（GUI）编程中，内部类常被用于事件处理，因为它可以直接访问外部类的状态和方法，减少了代码的复杂性。
+
+示例代码
+成员内部类
+java
+复制代码
+class Outer {
+    private String outerField = "Outer field";
+
+    class Inner {
+        void display() {
+            System.out.println("Accessing: " + outerField);
+        }
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Outer outer = new Outer();
+        Outer.Inner inner = outer.new Inner();
+        inner.display();  // 输出: Accessing: Outer field
+    }
+}
+静态内部类
+java
+复制代码
+class Outer {
+    static String staticOuterField = "Static Outer field";
+
+    static class StaticInner {
+        void display() {
+            System.out.println("Accessing: " + staticOuterField);
+        }
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Outer.StaticInner staticInner = new Outer.StaticInner();
+        staticInner.display();  // 输出: Accessing: Static Outer field
+    }
+}
+参考资料
+Java Documentation
+GeeksforGeeks
