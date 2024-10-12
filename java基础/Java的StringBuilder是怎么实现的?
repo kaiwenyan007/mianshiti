@@ -1,0 +1,35 @@
+`StringBuilder` 是 Java 中用于构建可变字符串的类，它提供了比 `String` 更高效的字符串操作方法。其实现主要依赖于一个字符数组，该数组可以动态扩展，以适应字符串内容的增长。以下是 `StringBuilder` 的主要实现原理和特性：
+
+### 1. **内部结构**
+`StringBuilder` 维护一个字符数组 (`char[]`)，用于存储字符串的内容。它有几个关键属性：
+- **字符数组**：用于保存字符串的实际字符。
+- **长度**：当前有效字符的数量。
+- **容量**：字符数组的总大小，表示该数组可以容纳的最大字符数量。
+
+### 2. **动态扩展**
+当对 `StringBuilder` 进行操作（例如 `append`）并且字符数组的容量不足时，它会创建一个新的更大的字符数组，并将原有字符复制到新数组中。这个过程通常会将容量加倍，以减少未来的复制次数。
+
+### 3. **性能优势**
+- **可变性**：与 `String` 的不可变性不同，`StringBuilder` 允许直接在原始对象上修改字符串，因此避免了频繁创建新对象。
+- **线程不安全**：由于没有同步机制，`StringBuilder` 的性能在单线程环境下非常优秀。这是它相对于 `StringBuffer` 的一个重要优势。
+
+### 4. **常用方法**
+- `append(String str)`：将指定字符串附加到当前字符序列的末尾。
+- `insert(int offset, String str)`：在指定位置插入字符串。
+- `delete(int start, int end)`：删除指定范围内的字符。
+- `toString()`：返回当前字符序列的字符串表示形式。
+
+### 示例代码
+
+```java
+StringBuilder sb = new StringBuilder("Hello");
+sb.append(" World!"); // 追加字符串
+System.out.println(sb.toString()); // 输出: Hello World!
+```
+
+### 参考资料
+对于 `StringBuilder` 的详细实现和性能分析，您可以查阅以下资源：
+- [Java StringBuilder Official Documentation](https://docs.oracle.com/javase/7/docs/api/java/lang/StringBuilder.html)
+- [GeeksforGeeks on StringBuilder](https://www.geeksforgeeks.org/stringbuilder-in-java/) 
+
+这些资源提供了更深入的背景和使用示例。
