@@ -1,0 +1,39 @@
+在Java中，Exception 和 Error 都是继承自 Throwable 类的子类，用于表示程序运行时出现的异常情况。但它们有明显的区别：
+
+1. Exception
+含义: Exception 表示程序中可以预料并且可以处理的异常情况。
+类型: Exception 包含 受检异常（Checked Exception） 和 非受检异常（Unchecked Exception）。
+受检异常: 例如 IOException，在编译时强制要求处理（要么捕获异常，要么抛出）。这些异常表示可能的可恢复错误情况，通常与外部资源或输入输出相关。
+非受检异常: 例如 NullPointerException，是 RuntimeException 的子类。它们不要求在编译时处理，通常是由编程错误引起的。
+处理: Exception 可以通过 try-catch 块处理，也可以通过 throws 关键字将异常传播到调用者。
+例子:
+java
+复制代码
+try {
+    int result = 10 / 0; // 可能抛出 ArithmeticException
+} catch (ArithmeticException e) {
+    e.printStackTrace();
+}
+2. Error
+含义: Error 表示严重的错误，通常与 JVM（Java虚拟机）的运行环境有关。这类错误是无法恢复的，通常表示程序不应该去处理的致命问题。
+类型: 主要包括像 OutOfMemoryError、StackOverflowError、VirtualMachineError 等。
+处理: Error 通常不需要处理，因为这些错误往往意味着JVM已经进入无法正常恢复的状态，尝试处理它们并没有意义。
+例子:
+OutOfMemoryError：当 JVM 内存耗尽时，无法分配更多的内存。
+StackOverflowError：由于递归调用过深导致栈空间耗尽。
+主要区别：
+性质不同：
+
+Exception：是程序内部可以捕获并处理的异常，属于可恢复的情况。
+Error：是系统级的错误，通常不可恢复，不建议捕获。
+处理方式不同：
+
+Exception 通常通过 try-catch 块来捕获并处理，或者通过 throws 关键字向上传递。
+Error 不建议处理，它通常表示严重的系统错误（如内存不足）。
+产生原因：
+
+Exception 多是由于代码逻辑或外部输入等因素导致的运行时异常。
+Error 主要由JVM故障或资源耗尽等系统问题引发。
+总结：
+Exception：程序可控、可处理的异常。
+Error：系统级、不可控的严重错误，不建议处理。
