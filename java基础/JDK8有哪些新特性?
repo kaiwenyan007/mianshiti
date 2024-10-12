@@ -1,0 +1,52 @@
+Java开发工具包（JDK）8引入了多个重要的新特性，增强了Java编程语言及其生态系统。以下是一些关键的新特性：
+
+Lambda表达式：允许以更简洁的方式表示单方法接口（函数式接口）的实例。Lambda表达式使得编写代码更加清晰，特别是在处理集合和流API时。
+
+示例：
+
+java
+复制代码
+list.forEach(item -> System.out.println(item));
+流API：流API允许对元素序列（如集合）进行函数式操作，支持过滤、映射、归约和收集等操作，使得以声明式方式处理数据变得更加简单。
+
+示例：
+
+java
+复制代码
+List<String> filtered = list.stream()
+                            .filter(s -> s.startsWith("A"))
+                            .collect(Collectors.toList());
+默认方法：接口现在可以包含默认方法（有方法体的方法），这允许在不破坏现有实现的情况下向接口添加新方法。
+
+示例：
+
+java
+复制代码
+interface MyInterface {
+    default void myDefaultMethod() {
+        System.out.println("默认实现");
+    }
+}
+新日期和时间API：JDK 8引入了一个新的日期和时间库（java.time包），提供了一种更全面和灵活的方式来处理日期和时间，解决了旧有的java.util.Date和java.util.Calendar类存在的许多问题。
+
+示例：
+
+java
+复制代码
+LocalDate date = LocalDate.now();
+LocalDate tomorrow = date.plusDays(1);
+Optional类：Optional类是一个容器对象，可能包含一个非空值，也可能不包含。这个特性帮助避免了NullPointerException，并且使得何时可能缺少值更加明确。
+
+示例：
+
+java
+复制代码
+Optional<String> optional = Optional.ofNullable(someString);
+optional.ifPresent(s -> System.out.println(s));
+Nashorn JavaScript引擎：JDK 8包含一个新的轻量级JavaScript引擎Nashorn，允许在Java应用程序中嵌入JavaScript代码，并提高了性能。
+
+类型注解：Java 8允许在类型上应用注解，增强了类型系统并使API更加表达。
+
+并行流：流API支持并行处理，使得更容易利用多核架构处理大数据集。
+
+这些新特性大大增强了Java的功能性和可读性，使开发人员可以更高效地编写代码。有关更多详细信息，可以参考 Oracle的JDK 8特性介绍 或 GeeksforGeeks的Java 8特性。
