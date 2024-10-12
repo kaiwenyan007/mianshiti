@@ -1,0 +1,53 @@
+Java 中的多态性（Polymorphism）是面向对象编程的一个重要特性，允许一个对象在不同的场景下表现为不同的类型。多态性使得代码更加灵活和可扩展，提供了通过相同接口实现不同操作的能力。
+
+多态的两种形式
+编译时多态（静态多态性）：又称为方法重载（Method Overloading）。这是在编译时通过方法签名的不同来区分不同的方法。Java 允许在同一个类中定义多个方法，方法名相同但参数类型或参数个数不同，这些方法在调用时根据传递的参数类型或个数来选择合适的方法。
+
+示例：
+
+java
+复制代码
+public class Calculator {
+    public int add(int a, int b) {
+        return a + b;
+    }
+    public double add(double a, double b) {
+        return a + b;
+    }
+}
+运行时多态（动态多态性）：这是通过方法重写（Method Overriding）来实现的。它允许子类在继承父类时提供对父类方法的不同实现。在运行时，Java 虚拟机会根据实际的对象类型来调用合适的重写方法，而不是基于引用的类型。这是 Java 的核心多态性，通过继承和接口来实现。
+
+示例：
+
+java
+复制代码
+class Animal {
+    public void sound() {
+        System.out.println("Animal makes a sound");
+    }
+}
+
+class Dog extends Animal {
+    @Override
+    public void sound() {
+        System.out.println("Dog barks");
+    }
+}
+
+public class TestPolymorphism {
+    public static void main(String[] args) {
+        Animal myDog = new Dog();  // Animal reference but Dog object
+        myDog.sound();  // 调用 Dog 类的 sound() 方法
+    }
+}
+在这个例子中，虽然 myDog 是 Animal 类型的引用，但它在运行时会调用 Dog 类的 sound() 方法，因为实际的对象是 Dog。
+
+多态的优势
+代码可扩展性：多态允许在不改变现有代码的基础上，向程序添加新功能。例如，可以通过扩展现有类来实现不同的行为，而无需修改调用代码。
+
+灵活性：通过接口或父类引用指向子类对象，Java 程序能够根据实际对象的类型动态执行不同的行为。这大大提高了代码的灵活性。
+
+减少重复代码：多态性减少了代码的重复。使用通用父类或接口类型可以避免在不同子类中为每个具体类型编写重复的代码。
+
+小结
+Java 的多态性通过方法重载和方法重写的机制实现，支持在编译时和运行时的灵活性。多态是 Java 面向对象编程的核心特性之一，有助于提高代码的可维护性、可扩展性和灵活性。
