@@ -1,0 +1,36 @@
+在Java中，String、StringBuffer和StringBuilder是处理字符串的三种不同类，它们之间有几个关键区别：
+
+不可变性 vs 可变性：
+
+String：String对象是不可变的。一旦创建，就不能更改它的内容。任何对字符串的修改（如拼接、替换）都会创建一个新的String对象。
+StringBuffer和StringBuilder：这两者都是可变的，允许在原始对象上进行修改。例如，可以在现有的字符串上进行拼接，而无需创建新的对象。
+线程安全性：
+
+StringBuffer：是线程安全的，方法是同步的，这意味着多个线程可以安全地使用同一个StringBuffer对象。适合在多线程环境中使用。
+StringBuilder：不是线程安全的，其方法未同步，因此在单线程环境中使用时性能更高，但在多线程环境中可能会引发问题。
+性能：
+
+String：因为每次修改都创建一个新的对象，性能较差，特别是在需要频繁修改字符串的情况下。
+StringBuffer：由于其线程安全的特性，性能稍逊色于StringBuilder。
+StringBuilder：在大多数情况下，它的性能优于StringBuffer，因为它不需要同步机制，适用于单线程操作。
+使用场景：
+
+String：适用于常量字符串或少量字符串操作的场景。
+StringBuffer：适合在多线程环境中需要修改字符串的场合。
+StringBuilder：适合在单线程中频繁修改字符串的情况，性能最佳。
+示例代码
+java
+复制代码
+String str = "Hello";
+str += " World"; // 创建新的String对象
+
+StringBuffer sb = new StringBuffer("Hello");
+sb.append(" World"); // 修改原有对象
+
+StringBuilder sb2 = new StringBuilder("Hello");
+sb2.append(" World"); // 修改原有对象
+总结
+String：不可变，适合少量修改。
+StringBuffer：可变，线程安全，适合多线程环境。
+StringBuilder：可变，不线程安全，适合单线程环境且性能更优。
+有关更多详细信息，可以参考 Java Tutorials 或 GeeksforGeeks。
