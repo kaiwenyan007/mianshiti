@@ -1,0 +1,55 @@
+在 Java 中，参数传递始终是按值传递（Pass by Value），而不是按引用传递。
+
+如何理解：
+基本类型（Primitive Types）： 对于 int、float、char 等基本类型，Java 直接将值的副本传递给方法。修改参数不会影响原始变量。
+
+示例：
+
+java
+复制代码
+public class Example {
+    public static void changeValue(int num) {
+        num = 10;
+    }
+
+    public static void main(String[] args) {
+        int x = 5;
+        changeValue(x);
+        System.out.println(x); // 输出 5
+    }
+}
+引用类型（Reference Types）： 对于对象（例如数组或类的实例），Java 传递的是引用的副本，也就是对象的内存地址的副本。这意味着方法接收到的是对象的引用副本，修改这个引用所指向的对象的内容会影响原始对象。但引用本身是按值传递的，因此修改引用不会影响原始引用。
+
+示例：
+
+java
+复制代码
+public class Example {
+    public static void modifyObject(Dog dog) {
+        dog.name = "Max";
+    }
+
+    public static void main(String[] args) {
+        Dog myDog = new Dog("Fido");
+        modifyObject(myDog);
+        System.out.println(myDog.name); // 输出 "Max"
+    }
+}
+
+class Dog {
+    String name;
+    Dog(String name) {
+        this.name = name;
+    }
+}
+在这个例子中，modifyObject 方法可以修改 Dog 对象的 name 属性，因为它通过引用的副本访问了原始对象，但它不能改变 myDog 变量本身的引用。
+
+小结
+基本类型：按值传递，方法中对值的修改不影响原始变量。
+引用类型：引用的副本按值传递，方法中对对象内容的修改会影响原始对象，但不能改变原始引用。
+虽然 Java 对对象传递的是引用，但依然是通过“按值”传递引用，所以 Java 采用的是“按值传递”机制。
+
+
+
+
+
