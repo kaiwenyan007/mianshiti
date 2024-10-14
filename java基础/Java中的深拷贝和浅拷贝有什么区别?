@@ -1,0 +1,65 @@
+在Java中，深拷贝和浅拷贝是两种不同的对象复制方式，它们的主要区别在于如何处理对象中的引用类型属性。
+
+### 1. 浅拷贝（Shallow Copy）
+浅拷贝创建一个新对象，但只复制对象的基本数据类型的值和对象引用。对于引用类型的字段，浅拷贝并不会复制实际的对象，而是复制引用，因此源对象和目标对象中的引用字段将指向同一个内存地址。这意味着，如果对引用类型的字段进行修改，源对象和目标对象都会受到影响。
+
+#### 示例：
+```java
+class Person {
+    String name;
+    int age;
+
+    // 构造函数和其他方法
+}
+
+class ShallowCopyExample {
+    Person person;
+
+    public ShallowCopyExample(Person person) {
+        this.person = person;
+    }
+
+    public ShallowCopyExample clone() {
+        return new ShallowCopyExample(this.person); // 进行浅拷贝
+    }
+}
+```
+在这个例子中，如果你修改了 `clone()` 方法返回的新对象中的 `person` 的属性，原始对象的 `person` 也会受到影响。
+
+### 2. 深拷贝（Deep Copy）
+深拷贝不仅复制对象的基本数据类型的值，还会复制所有引用类型的对象。这意味着每个引用类型的对象都会被新建一个副本，源对象和目标对象中的引用字段将指向不同的内存地址。对任一对象的修改不会影响另一个对象。
+
+#### 示例：
+```java
+class Person {
+    String name;
+    int age;
+
+    // 深拷贝
+    public Person clone() {
+        Person newPerson = new Person();
+        newPerson.name = this.name; // 复制基本类型
+        newPerson.age = this.age; // 复制基本类型
+        return newPerson; // 返回新对象
+    }
+}
+
+class DeepCopyExample {
+    Person person;
+
+    public DeepCopyExample(Person person) {
+        this.person = person;
+    }
+
+    public DeepCopyExample clone() {
+        return new DeepCopyExample(this.person.clone()); // 进行深拷贝
+    }
+}
+```
+在这个例子中，`clone()` 方法将创建 `Person` 对象的一个新实例，因此即使对新对象的 `person` 属性进行修改，原始对象也不会受到影响。
+
+### 总结
+- **浅拷贝**：复制对象本身和基本数据类型，引用类型字段仍指向原始对象。
+- **深拷贝**：复制对象和所有引用类型的对象，生成全新的独立副本。
+
+这两种拷贝方式在选择时需要根据应用场景来决定，尤其在处理复杂对象时。希望这个解释能帮助你理解深拷贝和浅拷贝的区别！
