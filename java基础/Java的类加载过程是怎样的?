@@ -1,0 +1,35 @@
+Java的类加载过程是Java虚拟机（JVM）中的一个重要机制，它涉及到如何从文件系统或网络中加载类，并将其转换为JVM能够理解的格式。类加载过程通常分为以下几个步骤：
+
+### 1. 加载（Loading）
+- **定义**：类加载是指将类的字节码（通常是`.class`文件）读取到内存中，并创建一个代表该类的`Class`对象。
+- **实现**：JVM使用类加载器（ClassLoader）来完成这一步骤。类加载器根据类的完全限定名（如`com.example.MyClass`）来定位和加载类文件。
+
+### 2. 链接（Linking）
+链接步骤又可以细分为三个部分：
+- **验证（Verification）**：检查加载的类的字节码是否符合JVM的规范，确保不会引入任何错误（例如类型安全问题）。
+- **准备（Preparation）**：为类的静态变量分配内存并设置默认值（如`0`、`null`等）。
+- **解析（Resolution）**：将类中的符号引用转换为直接引用，解析类之间的依赖关系。
+
+### 3. 初始化（Initialization）
+- **定义**：初始化阶段是执行类的静态初始化块（static blocks）和静态变量的初始化。
+- **实现**：在这个阶段，JVM会调用类的构造方法进行初始化，并确保所有的静态成员和静态代码块被执行。
+
+### 4. 使用（Using）
+一旦类被初始化，就可以被程序使用。可以创建类的实例，调用类的方法等。
+
+### 5. 卸载（Unloading）
+- **定义**：如果一个类不再被使用，JVM可以选择卸载它以释放内存。
+- **实现**：这个过程通常由垃圾回收机制（Garbage Collection）自动处理。
+
+### 6. 类加载器的类型
+Java中有多种类加载器，包括：
+- **引导类加载器（Bootstrap ClassLoader）**：负责加载JDK的核心类（如`java.lang.*`）。
+- **扩展类加载器（Extension ClassLoader）**：加载Java的扩展库。
+- **应用程序类加载器（Application ClassLoader）**：加载用户类路径（classpath）下的类。
+
+### 参考资料
+- [Java Class Loading Mechanism](https://www.geeksforgeeks.org/class-loading-in-java/)
+- [How Java Class Loading Works](https://www.baeldung.com/java-classloading)
+- [Java ClassLoader Explained](https://www.javatpoint.com/classloader-in-java)
+
+Java的类加载机制是动态的，这使得Java具有灵活性和可扩展性，有助于实现诸如动态代理和插件系统等高级特性。
