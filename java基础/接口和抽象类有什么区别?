@@ -1,0 +1,76 @@
+在 Java 中，**接口（Interface）** 和 **抽象类（Abstract Class）** 都用于定义类的共同行为，但它们有一些关键区别。以下是接口和抽象类的主要区别：
+
+### 1. **实现方式**
+- **接口**：接口中的所有方法默认都是抽象的，不能包含任何方法的实现（从 Java 8 开始，接口可以有 `default` 方法和 `static` 方法，这些方法可以有实现）。接口只定义了类需要实现的行为，具体的实现由实现该接口的类提供。
+  ```java
+  public interface MyInterface {
+      void doSomething();  // 这是一个抽象方法
+  }
+  ```
+
+- **抽象类**：抽象类可以包含抽象方法（没有实现）和非抽象方法（带有具体实现）。抽象类用于部分实现的共享，同时允许子类实现剩余的部分逻辑。
+  ```java
+  public abstract class MyAbstractClass {
+      public abstract void doSomething();  // 抽象方法
+      public void doAnotherThing() {       // 非抽象方法
+          System.out.println("Doing another thing");
+      }
+  }
+  ```
+
+### 2. **继承 vs 实现**
+- **接口**：一个类可以实现多个接口（多重实现），这使得接口非常适合 Java 的多态设计。
+  ```java
+  public class MyClass implements MyInterface1, MyInterface2 {
+      // 必须实现所有接口的方法
+  }
+  ```
+
+- **抽象类**：一个类只能继承一个抽象类（Java 不支持多重继承），但可以同时继承一个抽象类并实现多个接口。
+  ```java
+  public class MyClass extends MyAbstractClass {
+      // 必须实现抽象类中的抽象方法
+  }
+  ```
+
+### 3. **默认访问修饰符**
+- **接口**：接口中的字段默认是 `public static final`（常量），方法是 `public` 且没有方法体（从 Java 8 开始允许 `default` 和 `static` 方法有方法体）。
+  ```java
+  public interface MyInterface {
+      int CONSTANT = 10;  // 相当于 public static final int CONSTANT = 10;
+      void doSomething();  // 相当于 public abstract void doSomething();
+  }
+  ```
+
+- **抽象类**：抽象类的字段和方法可以有不同的访问修饰符（`private`、`protected`、`public`），允许更细粒度的访问控制。
+
+### 4. **构造函数**
+- **接口**：接口没有构造函数，不能被实例化。
+  
+- **抽象类**：抽象类可以有构造函数，但不能直接实例化，只能通过子类来实例化它。
+  ```java
+  public abstract class MyAbstractClass {
+      public MyAbstractClass() {
+          System.out.println("Abstract class constructor");
+      }
+  }
+  ```
+
+### 5. **用途**
+- **接口**：接口主要用于定义行为契约，规定了实现类必须提供的方法。接口用于实现 **“什么”** 行为，而不关心 **“如何”** 实现。
+  
+- **抽象类**：抽象类用于共享代码，并允许子类部分或完全实现父类的功能。抽象类是实现 **“是什么”** 的基础，实现类可以继承其部分或全部行为。
+
+### 6. **适用场景**
+- **接口**：适用于当你希望不同类有相同的行为，但它们不属于同一类时。它适用于定义松耦合的代码结构，允许类通过实现相同的接口实现类似的功能。
+  
+- **抽象类**：适用于当多个类之间有共享的逻辑时，抽象类提供了一种可以共享实现代码的途径，同时允许子类覆盖或扩展部分逻辑。
+
+### 7. **Java 8+ 中的变化**
+- 从 **Java 8** 开始，接口可以有 `default` 方法和 `static` 方法。这使得接口变得更灵活，因为现在可以在接口中定义一些默认行为，而不需要依赖实现类提供所有的实现。
+
+### 总结
+- **接口** 是一种规范，只规定了必须实现的方法，不关心具体实现，并且支持多重实现。
+- **抽象类** 则是一种更具体的类，可以包含部分实现，子类继承时可以重用这些实现，但不支持多重继承。
+
+选择使用接口还是抽象类取决于你的设计需求。如果需要为不同的类提供共同的行为规范，可以选择接口；如果有一部分逻辑是可以共享的，则可以选择抽象类。
