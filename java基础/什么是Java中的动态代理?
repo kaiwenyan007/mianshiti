@@ -1,0 +1,82 @@
+在Java中，**动态代理**（Dynamic Proxy）是一种设计模式，允许在运行时动态地创建一个对象的代理，而不需要在编译时知道其具体实现。动态代理主要用于拦截方法调用并执行一些额外的操作，比如权限控制、日志记录、事务管理等，通常用于AOP（面向切面编程）场景。
+
+Java中的动态代理主要通过以下两种方式实现：
+
+### 1. **JDK动态代理**：
+   使用`java.lang.reflect.Proxy`类和`InvocationHandler`接口实现。这种方式只能代理实现了接口的类，无法代理普通的类。
+
+   - **Proxy类**：JDK的`Proxy`类可以为指定接口生成代理对象。
+   - **InvocationHandler接口**：用于定义代理对象中每个方法的执行逻辑。代理对象调用方法时会被转发到实现了`InvocationHandler`接口的类中，具体的逻辑通过其`invoke()`方法实现。
+
+   **示例**：
+   ```java
+   import java.lang.reflect.InvocationHandler;
+   import java.lang.reflect.Method;
+   import java.lang.reflect.Proxy;
+
+   // 目标接口
+   interface Service {
+       void perform();
+   }
+
+   // 实现类
+   class RealService implements Service {
+       public void perform() {
+           System.out.println("Executing service...");
+       }
+   }
+
+   // 动态代理的InvocationHandler实现
+   class ServiceProxy implements InvocationHandler {
+       private final Object target;
+
+       public ServiceProxy(Object target) {
+           this.target = target;
+       }
+
+       @Override
+       public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+           System.out.println("Before execution");
+           Object result = method.invoke(target, args); // 调用目标方法
+           System.out.println("After execution");
+           return result;
+       }
+   }
+
+   public class DynamicProxyExample {
+       public static void main(String[] args) {
+           Service realService = new RealService();
+           Service proxyInstance = (Service) Proxy.newProxyInstance(
+               realService.getClass().getClassLoader(),
+               realService.getClass().getInterfaces(),
+               new ServiceProxy(realService)
+           );
+           proxyInstance.perform(); // 使用代理对象
+       }
+   }
+   ```
+   运行结果：
+   ```
+   Before execution
+   Executing service...
+   After execution
+   ```
+
+### 2. **CGLIB动态代理**：
+   CGLIB（Code Generation Library）是一种通过字节码生成类的方式来创建代理对象，它不要求目标类必须实现接口。因此，CGLIB可以代理普通的类。
+
+   - CGLIB通过继承目标类并重写其方法来创建代理对象。
+   - 它比JDK动态代理的使用场景更广泛，特别是在目标类没有实现接口的情况下非常有用。
+
+   **注意**：从JDK 1.8开始，推荐优先使用JDK动态代理，而不是CGLIB代理，除非需要代理未实现接口的类。
+
+### 动态代理的作用：
+   - **日志记录**：在方法执行前后添加日志。
+   - **性能监控**：监控方法执行时间。
+   - **安全检查**：在调用某些敏感方法前进行权限检查。
+   - **事务管理**：在方法执行时自动开启和提交事务。
+
+### 总结：
+- JDK动态代理通过接口实现，适用于代理接口类。
+- CGLIB动态代理通过继承类实现，可以代理普通类。
+- 动态代理常用于AOP场景中，允许在不修改目标类的前提下添加额外的功能。
