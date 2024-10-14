@@ -1,0 +1,30 @@
+在Java中，`Integer` 缓存池是为了提高性能和减少内存使用而引入的机制。具体来说，Java会缓存一系列`Integer`对象，以便在创建小范围内的整数时重用这些对象。这个机制主要是为了优化内存管理和提升性能，尤其在需要频繁使用小整数的情况下。
+
+### 1. 缓存的范围
+Java的`Integer`缓存池默认缓存的`Integer`对象范围是从`-128`到`127`。也就是说，当你创建一个`Integer`对象，且其值在这个范围内时，Java会返回一个已经存在的对象，而不是每次都创建新的对象。
+
+### 2. 示例代码
+以下是一个示例代码，演示如何利用`Integer`缓存池：
+```java
+Integer a = 100; // 在缓存范围内
+Integer b = 100; // 同样在缓存范围内
+System.out.println(a == b); // 输出true，因为它们指向同一个对象
+
+Integer c = 200; // 超出缓存范围
+Integer d = 200; // 同样超出缓存范围
+System.out.println(c == d); // 输出false，因为它们指向不同的对象
+```
+
+### 3. 优势
+- **性能优化**：使用缓存池减少了对象的创建和垃圾回收，提高了性能，特别是在高频率使用小整数的场景中。
+- **内存管理**：由于不需要为每个小整数创建新的对象，因此降低了内存的使用。
+
+### 4. 自定义缓存范围
+如果需要，开发者可以通过使用`Integer`类的`Integer.valueOf(int)`方法来创建一个超出缓存范围的`Integer`对象。
+
+### 参考文献
+有关`Integer`缓存池的更多信息，可以参考以下链接：
+- [Java Integer Cache Explained](https://www.baeldung.com/java-integer-cache)
+- [Understanding Java Integer Cache](https://www.javamex.com/tutorials/integer_cache.shtml)
+
+这种缓存机制是Java的一项有用特性，对于提高性能和减少内存使用具有重要作用。
