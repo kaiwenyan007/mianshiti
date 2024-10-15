@@ -1,0 +1,56 @@
+在Java中，封装（Encapsulation）是面向对象编程的三大特性之一，它指的是将数据（属性）和操作数据的方法（方法）打包在一起，通过访问控制来保护数据，防止外部直接访问和修改对象的内部状态。封装通过将数据隐藏在类的内部，仅通过公共方法（getter 和 setter 方法）来访问和操作数据，从而确保数据的安全性和一致性。
+
+### 主要概念和特点：
+
+1. **数据隐藏：**
+   - 封装通过将对象的属性（字段）声明为私有（private），限制了外部直接访问和修改数据的能力。私有属性只能通过类内部定义的公共方法来访问。
+
+2. **公共方法（Accessor 和 Mutator 方法）：**
+   - 封装提供了公共方法（也称为访问器和修改器）来允许外部代码间接地访问和修改对象的私有属性。
+   - **Getter 方法**（访问器）用于获取对象的属性值，通常命名为 `getXxx()`，例如 `getName()`。
+   - **Setter 方法**（修改器）用于设置对象的属性值，通常命名为 `setXxx()`，例如 `setName(String name)`。
+
+3. **信息隐藏和安全性：**
+   - 封装隐藏了对象的内部实现细节，使得类的使用者只需要关注如何使用对象而不需要了解其内部的具体实现。
+   - 这种信息隐藏提高了安全性，防止了外部直接修改对象内部数据而导致意外的错误。
+
+4. **代码复用和维护：**
+   - 封装有助于提高代码的可重用性和可维护性。对象的内部实现可以自由修改，只要公共接口（方法）不变，外部代码不受影响。
+
+5. **示例：**
+
+   ```java
+   public class Car {
+       private String model;
+       private int year;
+       private double price;
+       
+       // Getter methods
+       public String getModel() {
+           return model;
+       }
+       
+       public int getYear() {
+           return year;
+       }
+       
+       public double getPrice() {
+           return price;
+       }
+       
+       // Setter methods
+       public void setModel(String model) {
+           this.model = model;
+       }
+       
+       public void setYear(int year) {
+           this.year = year;
+       }
+       
+       public void setPrice(double price) {
+           this.price = price;
+       }
+   }
+   ```
+
+在上面的示例中，`Car` 类封装了三个私有属性 `model`、`year` 和 `price`。外部代码无法直接访问这些属性，但可以通过公共的 getter 和 setter 方法来间接获取和设置这些属性的值。这种封装机制确保了 `Car` 类的属性只能通过指定的方法进行访问和修改，提高了代码的安全性和可维护性。
