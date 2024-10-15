@@ -1,0 +1,52 @@
+**Java 的 BigDecimal** 是 Java 中用于处理精确浮点数运算的类，特别适合处理涉及货币、财务计算等需要高精度的场景。普通的浮点类型（如 `float` 和 `double`）由于二进制表示的限制，可能会引发精度丢失的问题，而 `BigDecimal` 则通过使用任意精度的十进制数来避免这些问题。
+
+### BigDecimal 的主要特性
+1. **精确计算**：BigDecimal 使用十进制数存储，避免了二进制浮点数在处理非整数时的精度损失问题。它可以保证加减乘除等运算中的精度，是货币计算中常用的类。
+  
+2. **不可变性**：BigDecimal 类是不可变类，每次对它的修改操作都会返回一个新的 BigDecimal 对象，这确保了线程安全。
+
+3. **舍入模式**：BigDecimal 提供了多种舍入模式（如四舍五入、向上取整等），可以通过 `RoundingMode` 枚举类控制数值的舍入方式，避免不必要的舍入误差。
+
+4. **任意精度**：BigDecimal 支持任意长度的数值运算，能够在不丢失精度的情况下处理非常大或非常小的数字。
+
+### 使用示例
+```java
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
+public class BigDecimalExample {
+    public static void main(String[] args) {
+        BigDecimal number1 = new BigDecimal("10.50");
+        BigDecimal number2 = new BigDecimal("3.25");
+
+        BigDecimal sum = number1.add(number2);
+        BigDecimal difference = number1.subtract(number2);
+        BigDecimal product = number1.multiply(number2);
+        BigDecimal quotient = number1.divide(number2, 2, RoundingMode.HALF_UP); // 设置保留两位小数
+
+        System.out.println("Sum: " + sum);
+        System.out.println("Difference: " + difference);
+        System.out.println("Product: " + product);
+        System.out.println("Quotient: " + quotient);
+    }
+}
+```
+
+### BigDecimal 的常用方法
+- **`add(BigDecimal augend)`**：加法
+- **`subtract(BigDecimal subtrahend)`**：减法
+- **`multiply(BigDecimal multiplicand)`**：乘法
+- **`divide(BigDecimal divisor, int scale, RoundingMode roundingMode)`**：除法（可以设置保留的小数位数和舍入模式）
+- **`setScale(int newScale, RoundingMode roundingMode)`**：指定保留几位小数并设置舍入模式
+- **`compareTo(BigDecimal val)`**：比较两个 BigDecimal 对象，返回 `-1`、`0` 或 `1`，分别表示小于、等于或大于
+
+### 使用场景
+1. **金融计算**：在处理货币、利率或股票等精度至关重要的金融运算时，使用 BigDecimal 来避免浮点数精度问题。
+2. **高精度科学计算**：当需要处理超大或超小数值且需要保持精度时，比如物理学或天文学计算。
+3. **避免舍入误差**：特别是在涉及多次加减乘除的运算中，通过控制舍入模式可以减少误差的累积。
+
+### 注意事项
+- **性能问题**：由于 BigDecimal 是不可变对象，且其内部使用字符串形式来存储数值，因此它的性能可能不如 `double` 等原始类型高。在高频率计算的场景中，可能需要在性能和精度之间做权衡。
+
+### 总结
+BigDecimal 是 Java 中用于处理精确小数运算的重要类，在金融、科学计算等需要精度的场景中非常有用。通过合理使用 BigDecimal 和舍入模式，可以有效避免传统浮点数计算中的精度丢失问题。
