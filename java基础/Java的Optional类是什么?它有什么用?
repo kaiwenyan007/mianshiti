@@ -1,0 +1,49 @@
+`Optional` 类是 Java 8 引入的一个容器类，用于处理可能为 null 的值。它的设计目的是解决在使用传统的 null 引用时可能出现的空指针异常（NullPointerException）问题。具体来说，`Optional` 类主要有以下特点和用途：
+
+1. **处理可能为 null 的值：** `Optional` 封装了一个可能为 null 的值，并提供了一些方法来显式处理这种情况，避免了直接使用 null 引起的空指针异常。
+
+2. **强制显式检查空值：** 使用 `Optional` 强制开发者显式地处理值可能为 null 的情况，使得代码更加健壮和安全。
+
+3. **避免空指针异常：** 通过 `Optional` 可以在获取值时进行判断，如果值为 null，可以提供默认值或者执行其他操作，而不是直接抛出异常。
+
+4. **流式编程支持：** `Optional` 提供了一些便利的方法支持流式编程风格，例如 `map()`、`flatMap()`、`filter()` 等，这些方法可以帮助简化对值的处理逻辑。
+
+5. **优雅的链式调用：** 可以链式调用 `Optional` 的方法，避免了传统的嵌套 `if-else` 或者 `null` 检查的写法，使代码更加清晰和简洁。
+
+6. **API 设计哲学：** `Optional` 的设计是为了推荐在方法返回值可能为 null 的情况下使用，而不是在所有情况下都强制使用。它强调的是在明确知道可能为空的情况下，通过 `Optional` 显式地进行处理。
+
+使用 `Optional` 类需要注意以下几点：
+
+- **避免过度使用：** 不应该将 `Optional` 用于所有可能为空的情况，而应该在合适的情况下使用，例如方法的返回值或者类的字段。
+
+- **不建议作为方法参数或字段类型：** `Optional` 不适合作为方法的参数类型或者字段类型，而是更适合作为方法的返回类型，用于表示可能为 null 的情况。
+
+示例用法如下：
+
+```java
+// 创建一个包含非空值的 Optional 对象
+Optional<String> optional1 = Optional.of("Hello");
+
+// 创建一个可能为空的 Optional 对象
+Optional<String> optional2 = Optional.ofNullable(null);
+
+// 使用 map 处理 Optional 中的值
+String result1 = optional1.map(s -> s.toUpperCase()).orElse("Default");
+
+// 使用 orElseGet 提供默认值的生成方式
+String result2 = optional2.map(s -> s.toUpperCase()).orElseGet(() -> "Default");
+
+// 使用 ifPresent 检查是否有值并进行处理
+optional1.ifPresent(s -> System.out.println("Value is: " + s));
+
+// 使用 filter 进行条件过滤
+Optional<String> filtered = optional1.filter(s -> s.length() > 5);
+
+// 使用 flatMap 处理返回值为 Optional 的情况
+Optional<String> flatMapped = optional1.flatMap(s -> Optional.of(s.toUpperCase()));
+
+// 获取 Optional 中的值，如果为空则抛出 NoSuchElementException
+String value = optional1.get();
+```
+
+总之，`Optional` 类是 Java 中一种用于更加安全和优雅地处理可能为 null 的值的机制，它能有效减少空指针异常的发生，并且提升代码的可读性和健壮性。
