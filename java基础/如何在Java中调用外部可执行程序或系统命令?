@@ -1,0 +1,73 @@
+在 Java 中调用外部可执行程序或系统命令通常可以通过 `ProcessBuilder` 类或 `Runtime.getRuntime().exec()` 方法来实现。这两种方法都允许你执行操作系统级的命令或启动独立的进程。下面分别介绍这两种方法的基本用法：
+
+### 使用 `ProcessBuilder` 类
+
+`ProcessBuilder` 类提供了更灵活和强大的方式来调用外部程序，并允许你更好地控制进程的环境、工作目录等。
+
+```java
+import java.io.IOException;
+
+public class ExecuteExternalProcess {
+
+    public static void main(String[] args) {
+        // 假设要执行的命令是 "ls -l"，在 Unix/Linux 系统上列出当前目录下的文件和目录
+        String command = "ls";
+        String arg1 = "-l";
+
+        // 使用 ProcessBuilder 构建命令
+        ProcessBuilder processBuilder = new ProcessBuilder(command, arg1);
+
+        try {
+            // 启动进程并执行命令
+            Process process = processBuilder.start();
+
+            // 等待进程执行完成
+            int exitCode = process.waitFor();
+            System.out.println("Command executed with exit code: " + exitCode);
+
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+### 使用 `Runtime.getRuntime().exec()` 方法
+
+`Runtime.getRuntime().exec()` 方法是较老的一种调用外部程序的方式，它返回一个 `Process` 对象，可以用来管理执行过程。
+
+```java
+import java.io.IOException;
+
+public class ExecuteExternalProcess {
+
+    public static void main(String[] args) {
+        // 假设要执行的命令是 "ls -l"，在 Unix/Linux 系统上列出当前目录下的文件和目录
+        String command = "ls -l";
+
+        try {
+            // 执行命令
+            Process process = Runtime.getRuntime().exec(command);
+
+            // 等待进程执行完成
+            int exitCode = process.waitFor();
+            System.out.println("Command executed with exit code: " + exitCode);
+
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+### 注意事项：
+
+1. **参数传递：** 对于带参数的命令，可以通过 `ProcessBuilder` 的构造方法或者在 `Runtime.getRuntime().exec()` 方法中直接传递整个命令字符串。
+
+2. **错误处理：** 执行外部命令时，需要注意处理可能出现的 `IOException` 和 `InterruptedException`。
+
+3. **获取输出：** 如果需要获取命令执行的输出结果，可以通过 `process.getInputStream()` 获取标准输出流，并读取其内容。
+
+4. **安全性考虑：** 调用外部程序时应谨慎处理输入参数，避免因不当处理而引发安全漏洞。
+
+使用这些方法可以方便地在 Java 程序中调用系统命令或外部可执行程序，从而实现更广泛的应用场景，比如执行系统管理任务、调用第三方工具等。
