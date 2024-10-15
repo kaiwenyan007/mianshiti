@@ -1,0 +1,21 @@
+在Java中，I/O流（Input/Output streams）是用于处理输入和输出操作的一种抽象概念。它们提供了一种统一的方式来处理各种不同来源和目标的数据流，例如文件、网络连接、内存缓冲区等。
+
+Java的I/O流主要分为两种类型：
+
+1. **字节流（Byte Streams）：** 字节流以字节为单位进行操作，适用于处理二进制数据或者文本文件中的字节数据。主要的字节流类有：
+
+   - `InputStream`：用于从输入源（如文件、网络连接）读取字节数据。
+   - `OutputStream`：用于向输出目标（如文件、网络连接）写入字节数据。
+   
+   具体的实现类包括 `FileInputStream`、`FileOutputStream`、`BufferedInputStream`、`BufferedOutputStream` 等。
+
+2. **字符流（Character Streams）：** 字符流以字符为单位进行操作，适用于处理文本文件中的字符数据。字符流能够更好地处理字符编码和文本换行符等特性，主要的字符流类有：
+
+   - `Reader`：用于从输入源读取字符数据。
+   - `Writer`：用于向输出目标写入字符数据。
+   
+   具体的实现类包括 `FileReader`、`FileWriter`、`BufferedReader`、`BufferedWriter` 等。
+
+I/O流的使用遵循一般的输入和输出模型：从输入流中读取数据，或将数据写入输出流。在处理流时，通常会使用缓冲流（`BufferedInputStream`、`BufferedReader`、`BufferedOutputStream`、`BufferedWriter` 等），以提高性能并减少实际的I/O操作次数。
+
+Java提供了丰富的I/O类和方法，能够满足从简单文件读写到复杂网络通信的各种需求。正确地使用I/O流能够提高程序的效率和可维护性，同时避免常见的错误，如未关闭流或不正确地处理异常等。
