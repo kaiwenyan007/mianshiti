@@ -1,0 +1,17 @@
+Java的网络编程指的是使用Java编程语言和相关的网络库、API来开发网络应用程序或服务。这种编程涉及到使用各种协议（如TCP、UDP、HTTP等）在计算机网络上进行数据传输和通信。
+
+Java提供了丰富的网络编程支持，主要集中在以下几个方面：
+
+1. **Socket编程：** Java中的Socket类和ServerSocket类提供了底层的网络通信功能，允许开发者创建客户端和服务器端应用程序。通过Socket，可以建立TCP连接进行可靠的双向通信，也可以使用UDP协议进行无连接的数据传输。
+
+2. **URL和URLConnection：** Java的URL类和相关的URLConnection类提供了高级的URL处理和网络资源获取功能。它们可以用来访问Web页面、下载文件、发送HTTP请求等。
+
+3. **HTTP客户端和服务器：** Java提供了用于创建HTTP客户端和服务器的API，包括URLConnection类、HttpURLConnection类等，也可以使用第三方库如Apache HttpClient来处理更复杂的HTTP通信。
+
+4. **套接字通道和选择器：** Java NIO（New I/O）提供了更高效的非阻塞I/O操作方式，包括套接字通道（SocketChannel、ServerSocketChannel）和选择器（Selector），可以用于开发高性能的网络应用程序。
+
+5. **RMI（远程方法调用）和CORBA：** Java的远程方法调用（Remote Method Invocation，RMI）和Common Object Request Broker Architecture（CORBA）支持分布式对象通信，允许在不同的Java虚拟机（JVM）之间进行远程方法调用和对象传输。
+
+6. **WebSocket：** Java EE及其衍生框架（如Spring）支持WebSocket协议，允许建立基于WebSocket的双向通信，适用于实时数据传输和交互式Web应用。
+
+Java的网络编程不仅仅限于上述内容，还涉及到网络安全、数据加密、网络协议实现等方面。通过这些功能，开发者可以实现各种网络应用，包括客户端/服务器系统、Web服务、实时通信应用等。
