@@ -1,0 +1,12 @@
+`ConcurrentModificationException`是Java中的一个运行时异常，通常在对集合类进行遍历时，同时对该集合进行了结构上的修改（如添加或删除元素）时发生。它主要用于指示在迭代器迭代过程中，集合的结构被意外改变。
+
+产生该异常的常见场景包括：
+
+1. **使用迭代器遍历集合**：当使用`Iterator`的`next()`方法遍历集合时，如果在遍历过程中通过集合的其他方法（如`add()`或`remove()`）修改了集合，就会抛出此异常。
+
+2. **使用for-each循环**：在for-each循环中对集合进行修改，也会导致`ConcurrentModificationException`。
+
+为了避免这种异常，可以采取以下措施：
+- 使用`Iterator`的`remove()`方法进行删除。
+- 在遍历集合之前，将要修改的元素收集起来，遍历结束后再进行修改。
+- 使用线程安全的集合类，如`CopyOnWriteArrayList`或`ConcurrentHashMap`，在多线程环境中操作集合。
