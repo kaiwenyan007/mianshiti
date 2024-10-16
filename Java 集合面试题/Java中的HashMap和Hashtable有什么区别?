@@ -1,0 +1,20 @@
+`HashMap`和`Hashtable`在Java中的主要区别如下：
+
+1. **同步性**：
+   - `HashMap`是非同步的，不支持线程安全，适用于单线程环境或通过外部同步实现线程安全。
+   - `Hashtable`是同步的，所有的方法都是线程安全的，适合在多线程环境中使用。
+
+2. **性能**：
+   - 由于`HashMap`不需要进行同步，因此在性能上通常优于`Hashtable`，尤其是在单线程情况下。
+
+3. **Null键和Null值**：
+   - `HashMap`允许一个null键和多个null值。
+   - `Hashtable`不允许null键和null值，如果尝试使用null键或值，会抛出`NullPointerException`。
+
+4. **迭代器**：
+   - `HashMap`使用`Iterator`进行遍历，而`Hashtable`使用`Enumeration`。`Iterator`是更现代的接口，支持对集合进行修改。
+   
+5. **初始容量和负载因子**：
+   - 两者的构造函数不同，`HashMap`可以指定初始容量和负载因子，而`Hashtable`则使用默认的初始容量和负载因子，且其扩容机制较为复杂。
+
+总结来说，`HashMap`更灵活和高效，适用于大多数场景，而`Hashtable`因其线程安全特性在某些旧系统中仍然被使用，但在新代码中通常推荐使用`ConcurrentHashMap`来替代`Hashtable`。
