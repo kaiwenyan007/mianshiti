@@ -1,0 +1,45 @@
+在 Java 中，`Timer` 是一个用于调度任务的工具类，可以用来执行定时任务。它允许你安排一个任务在未来的某个时刻运行，或者定期重复运行。
+
+### 主要特点和用途：
+
+1. **调度任务**：
+   - `Timer` 可以安排一个任务在指定的时间开始执行，或者在指定的时间间隔后重复执行。
+
+2. **单线程执行**：
+   - `Timer` 内部只有一个后台线程来执行所有的任务。如果某个任务的执行时间过长，可能会影响后续任务的执行时间。
+
+3. **简单易用**：
+   - 提供了简单的 API 来安排和取消任务，使得定时任务的管理变得容易。
+
+### 使用示例：
+
+以下是使用 `Timer` 的基本示例：
+
+```java
+import java.util.Timer;
+import java.util.TimerTask;
+
+public class MyTimerTask extends TimerTask {
+    public void run() {
+        System.out.println("Task performed on: " + new Date());
+    }
+
+    public static void main(String[] args) {
+        Timer timer = new Timer();
+        TimerTask task = new MyTimerTask();
+
+        // 安排任务在 2 秒后执行，并每隔 5 秒重复执行一次
+        timer.schedule(task, 2000, 5000);
+    }
+}
+```
+
+### 注意事项：
+
+- **线程安全性**：`Timer` 类是线程安全的，但是任务执行时可能会受到单线程执行的限制，因此长时间运行的任务可能会影响其他任务的执行时间。
+  
+- **异常处理**：`Timer` 在执行任务时，如果抛出未捕获的异常，会终止定时器的运行，后续任务将不再执行。
+
+- **推荐替代**：在 Java 5 之后，推荐使用 `ScheduledExecutorService` 接口及其实现类（如 `ScheduledThreadPoolExecutor`）来代替 `Timer`，因为它们提供了更灵活、更强大的任务调度和执行功能，支持更多的调度策略和异常处理机制。
+
+总之，`Timer` 是 Java 中用于执行定时任务的简单工具类，适合简单的定时任务调度需求。
