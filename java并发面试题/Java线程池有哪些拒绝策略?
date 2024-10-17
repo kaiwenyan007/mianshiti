@@ -1,0 +1,39 @@
+Java线程池在任务提交时，如果无法接受新任务（通常是由于线程池已满或者其他限制），会根据预先设定的拒绝策略来处理。以下是Java线程池中常见的拒绝策略：
+
+1. **AbortPolicy（默认策略）**：
+   - 默认情况下，如果线程池无法接受新任务，会抛出 `RejectedExecutionException` 异常，中止并丢弃新任务。
+
+   ```java
+   ThreadPoolExecutor executor = new ThreadPoolExecutor(
+       corePoolSize, maxPoolSize, keepAliveTime, TimeUnit.SECONDS,
+       workQueue, Executors.defaultThreadFactory(), new ThreadPoolExecutor.AbortPolicy());
+   ```
+
+2. **CallerRunsPolicy**：
+   - 当线程池无法接受新任务时，由提交任务的线程自己去执行该任务。这种策略可以避免任务丢失，但可能会影响性能。
+
+   ```java
+   ThreadPoolExecutor executor = new ThreadPoolExecutor(
+       corePoolSize, maxPoolSize, keepAliveTime, TimeUnit.SECONDS,
+       workQueue, Executors.defaultThreadFactory(), new ThreadPoolExecutor.CallerRunsPolicy());
+   ```
+
+3. **DiscardPolicy**：
+   - 直接丢弃无法处理的任务，不提供任何反馈。新提交的任务不执行，并且不会抛出异常。
+
+   ```java
+   ThreadPoolExecutor executor = new ThreadPoolExecutor(
+       corePoolSize, maxPoolSize, keepAliveTime, TimeUnit.SECONDS,
+       workQueue, Executors.defaultThreadFactory(), new ThreadPoolExecutor.DiscardPolicy());
+   ```
+
+4. **DiscardOldestPolicy**：
+   - 丢弃最早加入工作队列的任务（即最早提交的任务），然后尝试重新提交当前任务。
+
+   ```java
+   ThreadPoolExecutor executor = new ThreadPoolExecutor(
+       corePoolSize, maxPoolSize, keepAliveTime, TimeUnit.SECONDS,
+       workQueue, Executors.defaultThreadFactory(), new ThreadPoolExecutor.DiscardOldestPolicy());
+   ```
+
+这些拒绝策略可以根据具体的应用场景和需求进行选择和配置，以保证线程池的稳定性和高效运行。
