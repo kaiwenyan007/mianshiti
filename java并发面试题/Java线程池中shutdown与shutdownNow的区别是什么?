@@ -1,0 +1,24 @@
+在Java中，`shutdown()` 和 `shutdownNow()` 是 `ExecutorService` 接口中用于关闭线程池的两个方法，它们的区别主要体现在如何处理等待执行的任务和已经执行的任务：
+
+1. **shutdown() 方法**：
+   - 调用 `shutdown()` 方法后，线程池会拒绝接受新的任务提交（即不再接受 `execute()` 方法提交的任务）。
+   - 线程池会继续执行已经提交的任务，包括等待执行和正在执行的任务。
+   - 如果调用了 `shutdown()` 后再尝试提交任务，会抛出 `RejectedExecutionException` 异常。
+
+   ```java
+   ExecutorService executor = Executors.newFixedThreadPool(10);
+   executor.shutdown(); // 关闭线程池
+   // executor.execute(new RunnableTask()); // 这行会抛出 RejectedExecutionException
+   ```
+
+2. **shutdownNow() 方法**：
+   - 调用 `shutdownNow()` 方法后，线程池会尝试停止所有正在执行的任务，并且不再处理等待执行的任务队列中的任务。
+   - 该方法会返回一个列表，包含尝试停止的所有正在执行的任务。
+   - 调用 `shutdownNow()` 后，线程池会立即中断所有的工作线程（通过调用它们的 `Thread.interrupt()` 方法）。
+
+   ```java
+   ExecutorService executor = Executors.newFixedThreadPool(10);
+   List<Runnable> unfinishedTasks = executor.shutdownNow(); // 停止所有正在执行的任务
+   ```
+
+总结来说，`shutdown()` 是一个温和的关闭方法，它允许已经提交的任务执行完成，而 `shutdownNow()` 则是一个更为强硬的关闭方法，尝试立即停止所有正在执行的任务，并返回那些未执行的任务列表。
