@@ -1,0 +1,63 @@
+在Java中，可以通过以下几种方式创建多线程：
+
+1. **继承Thread类**：
+   ```java
+   class MyThread extends Thread {
+       public void run() {
+           // 线程执行的代码
+       }
+   }
+
+   // 创建并启动线程
+   MyThread thread = new MyThread();
+   thread.start();
+   ```
+
+2. **实现Runnable接口**：
+   ```java
+   class MyRunnable implements Runnable {
+       public void run() {
+           // 线程执行的代码
+       }
+   }
+
+   // 创建Runnable实例，然后作为参数传递给Thread对象
+   Thread thread = new Thread(new MyRunnable());
+   thread.start();
+   ```
+
+3. **使用匿名类实现Runnable接口**：
+   ```java
+   Runnable runnable = new Runnable() {
+       public void run() {
+           // 线程执行的代码
+       }
+   };
+
+   // 创建Thread对象并启动线程
+   Thread thread = new Thread(runnable);
+   thread.start();
+   ```
+
+4. **使用Java 8的Lambda表达式简化匿名类**：
+   ```java
+   Runnable runnable = () -> {
+       // 线程执行的代码
+   };
+
+   // 创建Thread对象并启动线程
+   Thread thread = new Thread(runnable);
+   thread.start();
+   ```
+
+5. **使用线程池（ThreadPoolExecutor或Executors工厂方法）**：
+   ```java
+   ExecutorService executor = Executors.newFixedThreadPool(5); // 创建固定大小的线程池
+   executor.execute(() -> {
+       // 线程执行的代码
+   });
+   // 关闭线程池
+   executor.shutdown();
+   ```
+
+这些方法都可以用来创建并启动线程，选择合适的方式取决于你的需求和代码结构。
