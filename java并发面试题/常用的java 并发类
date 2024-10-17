@@ -1,0 +1,25 @@
+常用的 Java 并发类包括：
+
+1. **线程池相关**：
+   - `ThreadPoolExecutor`: 线程池的核心类，用于管理和执行线程任务。
+   - `Executors`: 提供了创建各种类型线程池的工厂方法。
+
+2. **并发集合**：
+   - `ConcurrentHashMap`: 线程安全的哈希表实现。
+   - `CopyOnWriteArrayList`: 线程安全的动态数组实现。
+   - `ConcurrentLinkedQueue`: 线程安全的队列实现。
+
+3. **同步工具类**：
+   - `CountDownLatch`: 一种线程同步工具，可以让一个或多个线程等待其他线程完成操作。
+   - `Semaphore`: 控制同时访问特定资源的线程数量。
+   - `CyclicBarrier`: 同步辅助类，允许一组线程互相等待，直到到达某个公共屏障点。
+
+4. **并发工具类**：
+   - `Atomic` 系列：如 `AtomicInteger`、`AtomicLong` 等，提供了原子操作的基本数据类型。
+   - `Lock` 系列：如 `ReentrantLock`，提供了显式的锁操作。
+
+5. **并发队列**：
+   - `LinkedBlockingQueue`、`ArrayBlockingQueue`: 不同实现的阻塞队列。
+   - `PriorityBlockingQueue`: 基于优先级的阻塞队列。
+
+这些类和工具能够帮助开发者在多线程环境中进行安全和高效的并发编程。
