@@ -1,0 +1,90 @@
+在 Java 中，可以使用多种方法来控制多个线程的执行顺序，以下是一些常用的方法：
+
+1. **使用 `join()` 方法**：
+   - `Thread` 类的 `join()` 方法可以让一个线程等待另一个线程完成后再继续执行。例如：
+     ```java
+     Thread t1 = new Thread(() -> {
+         // 执行任务1
+     });
+     Thread t2 = new Thread(() -> {
+         // 执行任务2
+     });
+     
+     t1.start();
+     t1.join(); // 等待 t1 结束
+     t2.start(); // t2 在 t1 完成后启动
+     ```
+
+2. **使用 `CountDownLatch`**：
+   - `CountDownLatch` 可以在一个或多个线程中等待直到某个事件发生，例如：
+     ```java
+     CountDownLatch latch = new CountDownLatch(1);
+
+     Thread t1 = new Thread(() -> {
+         // 执行任务1
+         latch.countDown(); // 任务1完成后调用
+     });
+     Thread t2 = new Thread(() -> {
+         try {
+             latch.await(); // 等待 t1 完成
+         } catch (InterruptedException e) {
+             e.printStackTrace();
+         }
+         // 执行任务2
+     });
+     
+     t1.start();
+     t2.start();
+     ```
+
+3. **使用 `CyclicBarrier`**：
+   - `CyclicBarrier` 可以使多个线程在某个点上同步：
+     ```java
+     CyclicBarrier barrier = new CyclicBarrier(2); // 等待2个线程
+
+     Thread t1 = new Thread(() -> {
+         // 执行任务1
+         try {
+             barrier.await(); // 等待 t2 到达
+         } catch (InterruptedException | BrokenBarrierException e) {
+             e.printStackTrace();
+         }
+         // 执行任务1之后的任务
+     });
+     Thread t2 = new Thread(() -> {
+         // 执行任务2
+         try {
+             barrier.await(); // 等待 t1 到达
+         } catch (InterruptedException | BrokenBarrierException e) {
+             e.printStackTrace();
+         }
+         // 执行任务2之后的任务
+     });
+
+     t1.start();
+     t2.start();
+     ```
+
+4. **使用 `Semaphore`**：
+   - `Semaphore` 可以控制访问资源的线程数量，也可以用来控制执行顺序：
+     ```java
+     Semaphore semaphore = new Semaphore(0); // 初始为0，控制顺序
+
+     Thread t1 = new Thread(() -> {
+         // 执行任务1
+         semaphore.release(); // 释放信号量
+     });
+     Thread t2 = new Thread(() -> {
+         try {
+             semaphore.acquire(); // 等待 t1 完成
+         } catch (InterruptedException e) {
+             e.printStackTrace();
+         }
+         // 执行任务2
+     });
+
+     t1.start();
+     t2.start();
+     ```
+
+通过这些方法，可以灵活地控制多个线程的执行顺序，确保任务按照预期的顺序完成。
