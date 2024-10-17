@@ -1,0 +1,28 @@
+抱歉，我之前的回答似乎截断了。让我重新回答你的问题：
+
+在标准的 `ThreadPoolExecutor` 中，核心线程数是无法动态修改的，一旦线程池创建后，核心线程数就被固定下来了。如果需要动态调整核心线程数，可以考虑以下方法：
+
+1. **自定义线程池**：
+   - 可以继承 `ThreadPoolExecutor` 类，并添加一个方法来动态设置核心线程数。下面是一个简单的示例：
+
+   ```java
+   import java.util.concurrent.*;
+
+   public class DynamicThreadPoolExecutor extends ThreadPoolExecutor {
+       public DynamicThreadPoolExecutor(int corePoolSize, int maximumPoolSize, long keepAliveTime, TimeUnit unit, BlockingQueue<Runnable> workQueue) {
+           super(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue);
+       }
+
+       // 添加一个方法来动态修改核心线程数
+       public void setCorePoolSize(int corePoolSize) {
+           super.setCorePoolSize(corePoolSize);
+       }
+   }
+   ```
+
+   在这个自定义的 `DynamicThreadPoolExecutor` 类中，可以通过调用 `setCorePoolSize` 方法来修改核心线程数。
+
+2. **使用 `ThreadPoolExecutor` 的扩展类**：
+   - 如果不想自己实现 `ThreadPoolExecutor` 的子类，可以考虑使用 `ThreadPoolExecutor` 提供的内置拒绝策略，如 `AbortPolicy`、`CallerRunsPolicy`、`DiscardPolicy` 等。这些策略可以在创建线程池时指定，但是无法动态修改核心线程数。
+
+总结来说，如果需要动态修改核心线程数，推荐使用自定义线程池或者自定义 `ThreadPoolExecutor` 的子类，并在其中实现核心线程数的动态修改方法。
