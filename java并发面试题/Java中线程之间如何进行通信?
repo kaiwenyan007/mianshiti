@@ -1,0 +1,27 @@
+在Java中，线程之间可以通过以下几种方式进行通信：
+
+1. **共享内存**：
+   - 多个线程访问同一个对象或变量，通过对共享数据的读写来实现通信。这种方式常见于使用 synchronized 关键字或者 Lock 接口实现的同步机制。
+
+2. **管道通信**：
+   - Java 提供了管道流 (`PipedInputStream` 和 `PipedOutputStream`) 和管道字符流 (`PipedReader` 和 `PipedWriter`)，可以用于线程间的通信。
+
+3. **wait() 和 notify() / notifyAll()**：
+   - 线程可以通过 `wait()` 方法进入等待状态，等待其他线程调用相同对象的 `notify()` 或 `notifyAll()` 方法来唤醒它们。
+
+4. **Condition 条件**：
+   - 使用 `java.util.concurrent.locks.Condition` 接口及其实现类（如 `ReentrantLock` 的 `newCondition()` 方法返回的对象），可以实现复杂的线程间通信。
+
+5. **阻塞队列**：
+   - `java.util.concurrent` 包提供了多种并发容器，如 `ArrayBlockingQueue`、`LinkedBlockingQueue` 等，这些队列可以作为线程间的通信通道。
+
+6. **CountDownLatch**：
+   - 可以让一个线程等待其他线程完成操作后再继续执行，通过 `CountDownLatch` 的 `await()` 和 `countDown()` 方法来实现。
+
+7. **CyclicBarrier**：
+   - 让一组线程互相等待达到一个公共屏障点，再继续执行，通过 `CyclicBarrier` 的 `await()` 方法实现。
+
+8. **Semaphore**：
+   - 控制同时访问某个特定资源的线程数量，通过 `Semaphore` 的 `acquire()` 和 `release()` 方法来获取和释放许可证。
+
+这些机制和类可以有效地在多线程编程中实现线程间的协作和通信，Java 提供了丰富的工具和类库来支持多线程编程，开发者可以根据具体的需求选择适当的方式进行线程间通信。
