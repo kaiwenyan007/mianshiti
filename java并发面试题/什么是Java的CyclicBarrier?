@@ -1,0 +1,63 @@
+`CyclicBarrier`（循环栅栏）是 Java 中的一种同步辅助工具，它允许一组线程互相等待，直到所有线程都到达某个公共屏障点（barrier），然后可以继续执行。与 `CountDownLatch` 类似，它也可以用来协调多个线程之间的同步。
+
+`CyclicBarrier` 的特点包括：
+
+1. **循环使用**：与 `CountDownLatch` 不同的是，`CyclicBarrier` 可以重复使用。一旦所有线程都到达屏障点，屏障就会打开，所有线程可以继续执行，并且可以重复使用。
+   
+2. **等待线程数量**：在创建 `CyclicBarrier` 时，可以指定等待的线程数量。当指定数量的线程都调用了 `await()` 方法后，所有线程将继续执行。
+
+3. **屏障动作**：可以提供一个可选的屏障动作（`Runnable`），当所有线程都到达屏障时，最后一个到达的线程将执行这个动作。
+
+`CyclicBarrier` 的典型应用场景包括：
+
+- **分治算法**：用于将一个问题分成若干个子问题，每个子问题由一个线程解决，然后合并结果。
+- **并行计算**：多个线程分别处理数据的一部分，然后合并结果。
+- **多线程计算总和**：每个线程计算一部分数据的总和，最后使用 `CyclicBarrier` 合并所有线程的计算结果。
+
+示例代码如下：
+
+```java
+import java.util.concurrent.BrokenBarrierException;
+import java.util.concurrent.CyclicBarrier;
+
+public class CyclicBarrierExample {
+    public static void main(String[] args) {
+        int numThreads = 3;
+        CyclicBarrier barrier = new CyclicBarrier(numThreads, () -> {
+            System.out.println("All threads have reached the barrier, executing barrier action.");
+        });
+
+        for (int i = 0; i < numThreads; i++) {
+            Thread thread = new Thread(new Worker(barrier, i));
+            thread.start();
+        }
+    }
+
+    static class Worker implements Runnable {
+        private final CyclicBarrier barrier;
+        private final int id;
+
+        public Worker(CyclicBarrier barrier, int id) {
+            this.barrier = barrier;
+            this.id = id;
+        }
+
+        @Override
+        public void run() {
+            try {
+                System.out.println("Worker " + id + " is working...");
+                Thread.sleep(2000); // 模拟工作时间
+                System.out.println("Worker " + id + " has finished and waiting at the barrier.");
+                barrier.await(); // 等待其他线程到达屏障点
+                System.out.println("Worker " + id + " continues execution after the barrier.");
+            } catch (InterruptedException | BrokenBarrierException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+}
+```
+
+在这个例子中，创建了一个 `CyclicBarrier` 实例，并指定了等待的线程数量为3。每个 Worker 线程执行完工作后调用 `await()` 方法等待其他线程到达屏障点，最后一个到达屏障点的线程会执行屏障动作，然后所有线程继续执行。
+
+特别想java8 的compeatablefuture
