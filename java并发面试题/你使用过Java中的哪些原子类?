@@ -1,0 +1,13 @@
+在Java中，我使用过几种常见的原子类，包括：
+
+1. **AtomicInteger**：提供原子性操作的整数类，支持加、减、设置等操作。
+
+2. **AtomicLong**：类似于AtomicInteger，但处理长整型。
+
+3. **AtomicBoolean**：提供原子性操作的布尔类，支持设置和获取操作。
+
+4. **AtomicReference**：支持对对象引用的原子性操作，可以用于实现线程安全的引用类型。
+
+5. **AtomicIntegerArray** 和 **AtomicReferenceArray**：分别支持对整型数组和引用数组的原子操作。
+
+这些原子类主要用于实现高效的无锁编程，避免使用传统的锁机制。你对某个特定的原子类有兴趣吗？
