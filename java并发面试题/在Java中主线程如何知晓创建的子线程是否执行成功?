@@ -1,0 +1,103 @@
+在 Java 中，主线程可以通过多种方式检查子线程的执行状态和结果。以下是几种常见的方法：
+
+### 1. 使用 `Thread.join()`
+主线程可以调用子线程的 `join()` 方法，该方法会阻塞主线程，直到子线程完成执行。这种方式允许主线程在子线程完成后检查其状态或结果。
+
+```java
+class MyThread extends Thread {
+    @Override
+    public void run() {
+        // 子线程的逻辑
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        MyThread thread = new MyThread();
+        thread.start();
+        try {
+            thread.join(); // 等待子线程完成
+            System.out.println("子线程已完成");
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+### 2. 使用 `Callable` 和 `Future`
+使用 `Callable` 接口和 `ExecutorService`，主线程可以提交一个任务并获取 `Future` 对象。`Future` 提供了方法来检查任务的执行状态、是否完成以及获取任务的结果。
+
+```java
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+
+class MyTask implements Callable<String> {
+    @Override
+    public String call() throws Exception {
+        // 子线程的逻辑
+        return "执行成功";
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        Future<String> future = executor.submit(new MyTask());
+        
+        try {
+            // 获取子线程的结果，若未完成则会阻塞
+            String result = future.get();
+            System.out.println("子线程结果: " + result);
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        } finally {
+            executor.shutdown();
+        }
+    }
+}
+```
+
+### 3. 使用共享变量
+主线程和子线程可以通过共享变量进行通信。例如，使用一个 `volatile` 变量来表示子线程的执行状态或结果。
+
+```java
+class MyThread extends Thread {
+    private volatile boolean success;
+
+    @Override
+    public void run() {
+        // 子线程的逻辑
+        // 假设逻辑执行成功
+        success = true;
+    }
+
+    public boolean isSuccess() {
+        return success;
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        MyThread thread = new MyThread();
+        thread.start();
+        
+        // 主线程可以轮询检查子线程的状态
+        while (thread.isAlive()) {
+            // 可能进行其他工作
+        }
+        
+        if (thread.isSuccess()) {
+            System.out.println("子线程执行成功");
+        } else {
+            System.out.println("子线程执行失败");
+        }
+    }
+}
+```
+
+### 总结
+根据具体需求，主线程可以选择不同的方法来检查子线程的执行状态和结果。使用 `Future` 和 `Callable` 通常是更为灵活和强大的方式。
