@@ -1,0 +1,34 @@
+在 Java 中，`volatile` 关键字用于修饰变量，主要有以下几个作用：
+
+1. **可见性**：当一个线程修改了被 `volatile` 修饰的变量，其他线程能够立即看到这个修改。这是因为 `volatile` 变量会直接从主内存读取，而不是从线程的工作内存中读取，从而确保了变量的最新值对所有线程都是可见的。
+
+2. **禁止重排序**：`volatile` 关键字可以防止指令重排序。编译器和运行时环境在执行时可能会对指令进行重排序以提高性能，但对于 `volatile` 变量，Java 内存模型保证了在对该变量的写操作之前，所有对它的读操作都会被执行，并且在对该变量的读操作之后，所有后续的写操作也会被执行。
+
+3. **简单的原子性**：虽然 `volatile` 不能保证复合操作的原子性（例如，`i++` 这样的操作不是原子的），但它可以保证对单个 `volatile` 变量的读写操作是原子的。
+
+### 使用场景
+
+`volatile` 适用于以下场景：
+
+- 状态标志位：用于标记某个状态，例如一个线程正在运行的标志。
+- 双重检查锁定（DCL）：在单例模式中，使用 `volatile` 确保在多线程环境下，单例对象的正确创建。
+
+### 示例
+
+```java
+public class VolatileExample {
+    private volatile boolean running = true;
+
+    public void run() {
+        while (running) {
+            // 执行任务
+        }
+    }
+
+    public void stop() {
+        running = false; // 修改 volatile 变量
+    }
+}
+```
+
+在这个示例中，`running` 变量被声明为 `volatile`，确保 `run()` 方法中的循环能够及时看到 `stop()` 方法中对 `running` 的修改。
