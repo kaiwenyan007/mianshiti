@@ -1,0 +1,60 @@
+`InheritableThreadLocal` 是 Java 中的一个特殊类型的 `ThreadLocal`，它允许子线程访问父线程的 `ThreadLocal` 变量的值。当一个线程（子线程）从另一个线程（父线程）创建时，`InheritableThreadLocal` 会将父线程的值复制到子线程中。这样，子线程在执行时可以访问到父线程的 `ThreadLocal` 变量。
+
+### 主要特点
+
+1. **值继承**：
+   - 子线程在创建时，会继承父线程的 `InheritableThreadLocal` 的值，这对于需要在线程间传递上下文信息（如用户会话、配置等）非常有用。
+
+2. **不影响父线程**：
+   - 父线程和子线程的 `InheritableThreadLocal` 变量是相互独立的。子线程可以修改其自己的值，而不会影响父线程的值。
+
+3. **实现方式**：
+   - `InheritableThreadLocal` 通过在创建子线程时，复制父线程的值，使用 `initialValue()` 方法来提供初始值。
+
+### 使用示例
+
+```java
+public class InheritableThreadLocalExample {
+    private static InheritableThreadLocal<String> inheritableThreadLocal = 
+        new InheritableThreadLocal<String>() {
+            @Override
+            protected String initialValue() {
+                return "Initial Value";
+            }
+        };
+
+    public static void main(String[] args) {
+        inheritableThreadLocal.set("Parent Value");
+        
+        Thread childThread = new Thread(() -> {
+            System.out.println("Child Thread Value: " + inheritableThreadLocal.get());
+            inheritableThreadLocal.set("Child Value");
+            System.out.println("Child Thread New Value: " + inheritableThreadLocal.get());
+        });
+
+        childThread.start();
+
+        try {
+            childThread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println("Main Thread Value: " + inheritableThreadLocal.get());
+    }
+}
+```
+
+### 输出结果
+```
+Child Thread Value: Parent Value
+Child Thread New Value: Child Value
+Main Thread Value: Parent Value
+```
+
+### 注意事项
+
+- **性能开销**：使用 `InheritableThreadLocal` 会有一定的性能开销，因为需要在创建子线程时复制值。
+- **避免内存泄漏**：和其他 `ThreadLocal` 一样，使用 `InheritableThreadLocal` 时，也需要注意在不再需要时清理数据，以避免内存泄漏。
+
+总之，`InheritableThreadLocal` 是一个方便的工具，适用于需要在线程间传递上下文信息的场景。
