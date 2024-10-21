@@ -1,0 +1,20 @@
+Java的**happens-before**规则是Java Memory Model（JMM）中的一个重要概念，用于定义操作之间的可见性和顺序关系。它确保一个线程对共享变量的修改对其他线程是可见的，并且帮助开发者理解在多线程环境中执行顺序的保证。
+
+### 主要规则包括：
+
+1. **程序顺序规则**：在一个线程内，按照代码的书写顺序，前面的操作happens-before后面的操作。
+
+2. **监视器锁规则**：对同一个锁的解锁操作happens-before对该锁的后续加锁操作。
+
+3. **volatile变量规则**：对一个volatile变量的写操作happens-before对该变量的后续读操作。
+
+4. **线程启动规则**：对线程的start()方法的调用happens-before该线程的run()方法的开始执行。
+
+5. **线程终止规则**：线程的正常终止（即run()方法正常返回）happens-before其他线程检测到该线程已经 terminated。
+
+6. **中断规则**：对线程的interrupt()方法的调用happens-before被该线程检测到中断状态。
+
+7. **操作传递性**：如果A happens-before B，且B happens-before C，那么A也 happens-before C。
+
+### 作用
+happens-before规则确保了在多线程环境中对共享变量的读写操作具有一致性，从而避免了由于缓存、编译器优化等导致的不可预测的行为。这些规则使得开发者能够以更安全和明确的方式进行多线程编程。
