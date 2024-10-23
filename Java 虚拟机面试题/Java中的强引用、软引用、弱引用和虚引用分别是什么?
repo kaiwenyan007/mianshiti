@@ -1,0 +1,37 @@
+在Java中，引用有多种类型，每种类型的引用对对象的生命周期和垃圾回收有不同的影响。具体如下：
+
+### 1. **强引用（Strong Reference）**
+这是最常见的引用类型。当一个对象被强引用时，垃圾回收器不会回收这个对象。即使系统内存紧张，只要强引用存在，垃圾回收器就不会释放该对象的内存。
+
+```java
+Object obj = new Object(); // 强引用
+```
+
+### 2. **软引用（Soft Reference）**
+软引用用于描述一些“还有用但非必要”的对象。当系统内存不足时，垃圾回收器会回收这些软引用指向的对象，但在内存充足的情况下，软引用对象不会被回收。
+
+```java
+SoftReference<Object> softRef = new SoftReference<>(new Object());
+```
+
+### 3. **弱引用（Weak Reference）**
+弱引用用于描述一些“非必要”的对象。只要垃圾回收器运行，任何被弱引用指向的对象都会被回收，不论内存是否紧张。
+
+```java
+WeakReference<Object> weakRef = new WeakReference<>(new Object());
+```
+
+### 4. **虚引用（Phantom Reference）**
+虚引用是一种非常弱的引用，用于在对象被垃圾回收时收到通知。虚引用的存在不会影响对象的生命周期。与虚引用关联的对象在被回收后会被放入引用队列中，可以通过引用队列进行一些清理工作。
+
+```java
+PhantomReference<Object> phantomRef = new PhantomReference<>(new Object(), referenceQueue);
+```
+
+### 总结
+- **强引用**：强烈保持对象，GC不会回收。
+- **软引用**：对象在内存不足时可回收，适合缓存。
+- **弱引用**：对象会被GC回收，适合使用场景较少的对象。
+- **虚引用**：无法单独使用，仅用于在对象被回收时通知。
+
+这些引用机制为Java提供了灵活的内存管理方式，特别适合在不同场景中优化内存使用。
