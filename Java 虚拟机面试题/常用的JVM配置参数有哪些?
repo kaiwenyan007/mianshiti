@@ -1,0 +1,133 @@
+在 Java 开发和调优中，JVM（Java Virtual Machine）提供了丰富的配置参数，帮助开发者控制内存管理、垃圾回收、性能优化等方面。下面是一些常用的 JVM 配置参数：
+
+### 1. **堆内存相关参数**
+
+- `-Xms<size>`：设置堆的初始大小。
+  - 示例：`-Xms512m`（初始堆大小为 512MB）。
+  
+- `-Xmx<size>`：设置堆的最大大小。
+  - 示例：`-Xmx2g`（最大堆大小为 2GB）。
+
+- `-XX:NewSize=<size>`：设置新生代的初始大小。
+  - 示例：`-XX:NewSize=256m`（新生代初始大小为 256MB）。
+
+- `-XX:MaxNewSize=<size>`：设置新生代的最大大小。
+
+- `-XX:NewRatio=<ratio>`：设置新生代与老年代的大小比例，`NewRatio=2` 表示新生代占 1/3，老年代占 2/3。
+
+- `-XX:SurvivorRatio=<ratio>`：设置 Eden 区与 Survivor 区的大小比例，默认值为 8，表示 Eden : S0 : S1 = 8:1:1。
+
+- `-XX:MaxTenuringThreshold=<N>`：设置对象晋升到老年代的最大年龄阈值。
+
+---
+
+### 2. **垃圾回收相关参数**
+
+- `-XX:+UseSerialGC`：使用串行垃圾回收器（适用于单核 CPU）。
+  
+- `-XX:+UseParallelGC`：使用并行垃圾回收器（适用于高吞吐量场景）。
+  - 配置并行老年代垃圾回收：`-XX:+UseParallelOldGC`。
+
+- `-XX:+UseConcMarkSweepGC`：使用 CMS（Concurrent Mark-Sweep）垃圾回收器（适用于低停顿时间场景）。
+
+- `-XX:+UseG1GC`：使用 G1（Garbage First）垃圾回收器（适用于大堆和低停顿时间需求的应用）。
+  
+- `-XX:MaxGCPauseMillis=<N>`：设置允许的最大 GC 停顿时间（适用于 G1、ZGC）。
+  
+- `-XX:GCTimeRatio=<N>`：设置 GC 时间与应用执行时间的比例，默认值为 99（表示 1% 的时间用于 GC）。
+
+- `-XX:+UseZGC`：使用 ZGC（Z Garbage Collector），适用于低延迟需求的场景。
+
+- `-XX:+UseShenandoahGC`：使用 Shenandoah GC，适用于低停顿时间需求。
+
+- `-XX:ParallelGCThreads=<N>`：设置并行垃圾回收器使用的线程数（适用于 Parallel 和 G1 GC）。
+
+- `-XX:ConcGCThreads=<N>`：设置 CMS 或 G1 使用的并发 GC 线程数。
+
+- `-XX:+PrintGCDetails`：打印 GC 详细信息。
+
+- `-XX:+PrintGCDateStamps`：在 GC 日志中打印时间戳。
+
+- `-Xlog:gc*`：开启 GC 日志（JDK 9 及以上版本）。
+
+---
+
+### 3. **元空间（Metaspace）相关参数**
+
+- `-XX:MetaspaceSize=<size>`：设置元空间的初始大小（JDK 8 及以上，替代 PermGen）。
+
+- `-XX:MaxMetaspaceSize=<size>`：设置元空间的最大大小。
+
+---
+
+### 4. **线程栈大小**
+
+- `-Xss<size>`：设置每个线程的栈大小。
+  - 示例：`-Xss512k`（每个线程的栈大小为 512KB）。
+
+---
+
+### 5. **类加载与编译**
+
+- `-XX:+UseCompressedOops`：启用 64 位指针压缩，减小对象指针大小，提升内存效率（默认启用）。
+  
+- `-XX:ReservedCodeCacheSize=<size>`：设置 JVM 编译后的字节码缓存的大小，通常用于优化 JIT 编译。
+
+- `-XX:+TieredCompilation`：启用分层编译模式，将热点代码进行多层优化编译（默认启用）。
+
+---
+
+### 6. **调优与诊断**
+
+- `-XX:+HeapDumpOnOutOfMemoryError`：在出现内存溢出错误时生成堆转储文件（通常用于分析问题）。
+  - 示例：`-XX:HeapDumpPath=/path/to/file`。
+
+- `-XX:+PrintFlagsFinal`：打印所有 JVM 参数的最终值。
+
+- `-XX:+PrintCommandLineFlags`：打印 JVM 启动时设置的命令行参数。
+
+- `-XX:+ExitOnOutOfMemoryError`：在发生 `OutOfMemoryError` 时立即退出 JVM。
+
+- `-XX:ErrorFile=<file-path>`：指定 JVM 出错时生成的日志文件位置。
+
+---
+
+### 7. **应用性能相关**
+
+- `-XX:+AggressiveOpts`：启用一些新的或试验性的优化选项，适用于性能调优。
+
+- `-XX:+AlwaysPreTouch`：启动时将所有堆内存预先分配并触碰，避免运行时动态分配内存带来的延迟。
+
+- `-XX:+UseLargePages`：启用大页内存支持，以减少内存管理开销，提高内存访问效率。
+
+---
+
+### 8. **其他常用参数**
+
+- `-Dproperty=value`：设置系统属性。
+  - 示例：`-Duser.timezone=UTC`（设置时区为 UTC）。
+
+- `-server`：启用服务器模式 JVM（通常用于生产环境，提供更激进的优化，默认情况下，JVM 会根据硬件自动选择客户端或服务器模式）。
+
+- `-client`：启用客户端模式 JVM（通常用于小型应用和开发环境）。
+
+---
+
+### 9. **垃圾回收日志分析工具**
+
+- **JVM GC Log**：通过 `-Xlog:gc*` 或 `-XX:+PrintGCDetails` 等参数开启 GC 日志，生成的日志可以用以下工具分析：
+  - **GCViewer**：用于分析 GC 日志，评估垃圾回收的效果。
+  - **GCEasy**：在线 GC 日志分析工具。
+
+---
+
+### 10. **JVM 监控工具**
+
+- **JVisualVM**：JVM 自带的监控工具，能实时查看内存、线程、GC、CPU 使用情况。
+- **JConsole**：轻量级的 JVM 监控工具，适合查看基本的内存和线程信息。
+
+---
+
+### 结论
+
+JVM 提供了多种参数用于调整内存、垃圾回收、性能优化等方面。合理使用这些参数可以根据应用需求优化 JVM 的性能，减少 GC 停顿，提高系统的稳定性和吞吐量。在生产环境中，通过监控和分析工具结合调优参数，可以确保 JVM 的高效运行。
