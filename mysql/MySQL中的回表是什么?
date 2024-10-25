@@ -1,0 +1,52 @@
+在 MySQL 中，**回表**是指在使用非聚簇索引进行查询时，MySQL 需要**通过非聚簇索引查找到主键值，再通过主键值到聚簇索引查找完整数据行**的过程。这一操作主要发生在 InnoDB 存储引擎中，因为 InnoDB 使用的是**聚簇索引**结构。
+
+### 回表过程的详细说明
+
+1. **通过非聚簇索引查找主键**：当查询条件使用非聚簇索引（也叫辅助索引）上的列时，MySQL 会先在该索引中查找到符合条件的主键值。
+   
+2. **通过主键值查找聚簇索引**：因为非聚簇索引的叶子节点不包含完整的数据行，只包含索引列和主键值，因此 MySQL 需要通过获取的主键值，再次访问聚簇索引找到对应的完整数据行。
+
+### 举例说明
+
+假设有一个包含员工信息的表 `employees`：
+
+```sql
+CREATE TABLE employees (
+    id INT PRIMARY KEY,
+    name VARCHAR(100),
+    age INT,
+    department VARCHAR(100),
+    INDEX idx_department (department)  -- 非聚簇索引
+) ENGINE=InnoDB;
+```
+
+此表中，`id` 列为主键，因此它构成了聚簇索引；`department` 列上创建了一个非聚簇索引 `idx_department`。
+
+现在假设有如下查询：
+
+```sql
+SELECT name, age FROM employees WHERE department = 'Sales';
+```
+
+**查询过程如下：**
+
+1. MySQL 先通过非聚簇索引 `idx_department` 找到所有 `department = 'Sales'` 的行对应的主键 `id`。
+2. 然后 MySQL 使用查到的主键 `id` 到聚簇索引中查找每一行的完整数据，获取 `name` 和 `age` 的值。
+   
+这就是**回表**过程：因为非聚簇索引的叶子节点中没有完整数据，需要再到聚簇索引中找到完整数据行。
+
+### 如何避免回表
+
+回表操作会增加查询的开销，如果想避免回表，可以使用**覆盖索引**。覆盖索引是指查询所需要的数据**完全在非聚簇索引中就能获取到**，不需要访问聚簇索引。例如：
+
+```sql
+SELECT department FROM employees WHERE department = 'Sales';
+```
+
+在这个查询中，由于 `department` 列正好被索引覆盖，MySQL 只需要从非聚簇索引 `idx_department` 中读取数据即可，不需要回表，从而提高了查询效率。
+
+### 总结
+
+- **回表**：非聚簇索引查到主键后再查聚簇索引的过程。
+- **发生条件**：查询需要的列不在非聚簇索引中，需要通过主键访问聚簇索引。
+- **优化方法**：尽量使用覆盖索引来避免回表，提高查询效率。
