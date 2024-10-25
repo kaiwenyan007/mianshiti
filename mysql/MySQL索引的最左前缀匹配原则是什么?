@@ -1,0 +1,67 @@
+MySQL 索引的**最左前缀匹配原则**是指，当使用多列组合索引时，查询语句要**从索引的最左列开始**，按顺序使用索引中的一列或多列，才能有效利用索引来加速查询。该原则广泛适用于 B-Tree 索引。
+
+### 原理
+
+在 MySQL 中，组合索引（也叫复合索引）是由多列共同构成的一个索引。例如，如果为表 `employees` 的 `(department, age, name)` 列创建了组合索引，那么该组合索引支持以下查询方式：
+
+1. **department** 作为单独条件
+2. **department 和 age** 作为联合条件
+3. **department、age 和 name** 作为联合条件
+
+根据最左前缀匹配原则，MySQL 在使用组合索引时，会**从最左边的列开始**依次匹配，遇到不连续的列或未按顺序查询的列时，索引会失效。
+
+### 举例说明
+
+假设有一个包含员工信息的表 `employees`：
+
+```sql
+CREATE TABLE employees (
+    id INT PRIMARY KEY,
+    department VARCHAR(50),
+    age INT,
+    name VARCHAR(50),
+    INDEX idx_department_age_name (department, age, name)
+) ENGINE=InnoDB;
+```
+
+在这里，`idx_department_age_name` 是一个多列组合索引，由 `(department, age, name)` 列构成。
+
+#### 1. 能利用索引的查询
+
+根据最左前缀匹配原则，以下查询能有效使用索引：
+
+- **仅使用最左列 `department`**：
+  ```sql
+  SELECT * FROM employees WHERE department = 'Sales';
+  ```
+- **使用最左两列 `department` 和 `age`**：
+  ```sql
+  SELECT * FROM employees WHERE department = 'Sales' AND age = 30;
+  ```
+- **使用全部三列 `department`、`age` 和 `name`**：
+  ```sql
+  SELECT * FROM employees WHERE department = 'Sales' AND age = 30 AND name = 'Alice';
+  ```
+
+#### 2. 无法利用索引的查询
+
+如果查询条件不符合最左前缀匹配原则，则索引不会被使用，或只使用部分索引：
+
+- **忽略最左列 `department`，直接用 `age` 查询**：
+  ```sql
+  SELECT * FROM employees WHERE age = 30;
+  ```
+  > 不能使用索引，因为未按顺序从最左列开始。
+
+- **跳过中间列，使用 `department` 和 `name`**：
+  ```sql
+  SELECT * FROM employees WHERE department = 'Sales' AND name = 'Alice';
+  ```
+  > 只能使用 `department` 列的索引，而不能利用到 `name` 列的索引，因为中间的 `age` 被跳过了。
+
+### 应用场景总结
+
+- **单独使用第一列条件**、**连续使用前几列条件**或**全条件匹配**，最左前缀原则允许按顺序利用组合索引加速查询。
+- **按需建立组合索引**：考虑最常用的查询方式来设计组合索引，减少无效列或过多列对查询的干扰。
+
+最左前缀匹配原则帮助 MySQL 更高效地利用组合索引，避免不必要的回表查询和全表扫描。
