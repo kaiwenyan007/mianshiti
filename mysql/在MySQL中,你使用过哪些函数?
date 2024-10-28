@@ -1,0 +1,99 @@
+在 MySQL 中，有许多常用的函数，可以用于字符串处理、数学运算、日期和时间操作等。以下是一些常见的函数分类和示例：
+
+### 1. **字符串函数**
+
+- **`CONCAT()`**：连接两个或多个字符串。
+  ```sql
+  SELECT CONCAT('Hello', ' ', 'World');
+  ```
+
+- **`SUBSTRING()`**：提取字符串的子串。
+  ```sql
+  SELECT SUBSTRING('Hello World', 1, 5);  -- 返回 'Hello'
+  ```
+
+- **`LENGTH()`**：返回字符串的长度。
+  ```sql
+  SELECT LENGTH('Hello');  -- 返回 5
+  ```
+
+- **`LOWER()` / `UPPER()`**：转换字符串为小写或大写。
+  ```sql
+  SELECT LOWER('Hello World');  -- 返回 'hello world'
+  ```
+
+### 2. **数学函数**
+
+- **`ABS()`**：返回绝对值。
+  ```sql
+  SELECT ABS(-10);  -- 返回 10
+  ```
+
+- **`ROUND()`**：对数字进行四舍五入。
+  ```sql
+  SELECT ROUND(123.456, 2);  -- 返回 123.46
+  ```
+
+- **`RAND()`**：生成一个 0 到 1 之间的随机数。
+  ```sql
+  SELECT RAND();
+  ```
+
+### 3. **日期和时间函数**
+
+- **`NOW()`**：返回当前的日期和时间。
+  ```sql
+  SELECT NOW();
+  ```
+
+- **`CURDATE()`**：返回当前日期。
+  ```sql
+  SELECT CURDATE();
+  ```
+
+- **`DATE_ADD()`** / **`DATE_SUB()`**：向日期添加或减去时间。
+  ```sql
+  SELECT DATE_ADD(NOW(), INTERVAL 1 DAY);
+  SELECT DATE_SUB(NOW(), INTERVAL 1 MONTH);
+  ```
+
+### 4. **聚合函数**
+
+- **`COUNT()`**：计算行数。
+  ```sql
+  SELECT COUNT(*) FROM table_name;
+  ```
+
+- **`SUM()`**：计算总和。
+  ```sql
+  SELECT SUM(column_name) FROM table_name;
+  ```
+
+- **`AVG()`**：计算平均值。
+  ```sql
+  SELECT AVG(column_name) FROM table_name;
+  ```
+
+- **`MAX()` / `MIN()`**：获取最大或最小值。
+  ```sql
+  SELECT MAX(column_name) FROM table_name;
+  SELECT MIN(column_name) FROM table_name;
+  ```
+
+### 5. **条件函数**
+
+- **`IF()`**：根据条件返回不同的值。
+  ```sql
+  SELECT IF(condition, true_value, false_value);
+  ```
+
+- **`CASE`**：根据多个条件返回不同的值。
+  ```sql
+  SELECT CASE
+             WHEN condition1 THEN result1
+             WHEN condition2 THEN result2
+             ELSE result3
+         END;
+  ```
+
+这些函数可以帮助你在 MySQL 中进行各种数据操作和处理。如果你有具体的用例或需求，欢迎告诉我！
