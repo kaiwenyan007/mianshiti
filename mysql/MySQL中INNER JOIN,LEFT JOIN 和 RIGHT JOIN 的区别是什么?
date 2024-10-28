@@ -1,0 +1,53 @@
+在 MySQL 中，`INNER JOIN`、`LEFT JOIN` 和 `RIGHT JOIN` 是用于联接表的不同类型的 SQL 语句，它们的主要区别在于返回结果集中的行的选择标准。以下是它们的详细区别：
+
+### 1. **INNER JOIN**
+
+- **功能**：返回两个表中满足连接条件的记录。
+- **结果**：只有在两个表中都有匹配的行时，才会出现在结果集中。
+- **语法**：
+
+  ```sql
+  SELECT columns
+  FROM table1
+  INNER JOIN table2 ON table1.common_column = table2.common_column;
+  ```
+
+- **示例**：如果 `table1` 和 `table2` 之间的连接条件只有在 `table1` 的 `id` 列和 `table2` 的 `id` 列相等时，才返回结果。
+
+### 2. **LEFT JOIN (或 LEFT OUTER JOIN)**
+
+- **功能**：返回左侧表的所有记录，以及右侧表中匹配的记录。如果右侧表中没有匹配的记录，结果中会显示左侧表的记录，右侧表的列会填充 `NULL`。
+- **结果**：确保左侧表中的所有行都包含在结果集中，无论右侧表是否有匹配。
+- **语法**：
+
+  ```sql
+  SELECT columns
+  FROM table1
+  LEFT JOIN table2 ON table1.common_column = table2.common_column;
+  ```
+
+- **示例**：即使在 `table2` 中没有与 `table1` 的记录匹配的行，`table1` 的所有记录仍然会出现在结果集中。
+
+### 3. **RIGHT JOIN (或 RIGHT OUTER JOIN)**
+
+- **功能**：返回右侧表的所有记录，以及左侧表中匹配的记录。如果左侧表中没有匹配的记录，结果中会显示右侧表的记录，左侧表的列会填充 `NULL`。
+- **结果**：确保右侧表中的所有行都包含在结果集中，无论左侧表是否有匹配。
+- **语法**：
+
+  ```sql
+  SELECT columns
+  FROM table1
+  RIGHT JOIN table2 ON table1.common_column = table2.common_column;
+  ```
+
+- **示例**：即使在 `table1` 中没有与 `table2` 的记录匹配的行，`table2` 的所有记录仍然会出现在结果集中。
+
+### 总结
+
+| Join Type       | 结果集包含的行                         |
+|------------------|-------------------------------------|
+| **INNER JOIN**   | 只有两个表中都有的匹配行              |
+| **LEFT JOIN**    | 左侧表的所有行，和右侧表中匹配的行   |
+| **RIGHT JOIN**   | 右侧表的所有行，和左侧表中匹配的行   |
+
+选择使用哪种 JOIN 类型取决于你的查询需求和希望返回的结果集。
